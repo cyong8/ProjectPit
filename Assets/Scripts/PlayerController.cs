@@ -2,8 +2,10 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-    public float movementConstant = 5.0f;
+    public float movementConstant = 6.0f;
     Rigidbody playerRigidBody;
+
+    Vector3 movement;
 
 	// Use this for initialization
 	void Start () {
@@ -15,11 +17,23 @@ public class PlayerController : MonoBehaviour {
 	}
 
     void FixedUpdate () {
-        handlePlayerInput();
+        //handlePlayerInput();
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
+
+        handlePlayerInput(h, v);
     }
 
-    void handlePlayerInput () {
-        Vector3 currentVelocity = playerRigidBody.velocity;
+    void handlePlayerInput (float h, float v) {
+        movement.Set(h, 0f, v);
+        movement = movement.normalized * movementConstant * Time.deltaTime;
+        playerRigidBody.MovePosition(transform.position + movement);
+    }
+}
+
+
+/*
+ Vector3 currentVelocity = playerRigidBody.velocity;
         
         // Move Away
         if (Input.GetKey("w")) {
@@ -54,5 +68,6 @@ public class PlayerController : MonoBehaviour {
         // Limit Positive x
         if (currentVelocity.x > movementConstant)
             playerRigidBody.velocity.Set(movementConstant, currentVelocity.y, currentVelocity.z);
-    }
-}
+     
+     
+     */
