@@ -8,17 +8,18 @@ public class PlayerController : MonoBehaviour {
     private Vector3      playerCamForward;
 
     /********** MOVEMENT VARIABLES **********/
-    public  float        movementConstant = 0.15f;
+    public float         movementConstant = 0.15f;
     private Vector3      movement;
+    public float         jumpConstant = 5.0f;
 
     /********** CONSTANTS **********/
     static Quaternion    SWORD_PLUNGE_ROTATION = Quaternion.Euler(90.0f, 0.0f, 0.0f);
     static Quaternion    SWORD_HOLD_ROTATION   = Quaternion.Euler(145.0f, 0.0f, 0.0f);
     static Vector3       SWORD_HOLD_POSITION   = new Vector3(0.065f, 0.055f, -0.03f);
 
-
-	// Use this for initialization
-	void Start () {
+    /***********************************************************/
+    // Use this for initialization
+    void Start () {
         playerRigidBody = this.gameObject.GetComponent<Rigidbody>();
 
         playerSword = GameObject.Find("SwordPlayer1");
@@ -26,11 +27,13 @@ public class PlayerController : MonoBehaviour {
         if (Camera.main != null)
             playerCam = Camera.main.transform;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    /***********************************************************/
+    // Update is called once per frame
+    void Update () {
 	}
 
+    /***********************************************************/
     void FixedUpdate () {
 
         HandleSwordPlunge();
@@ -40,23 +43,26 @@ public class PlayerController : MonoBehaviour {
         HandlePlayerMovement();
     }
 
+    /***********************************************************/
     void HandlePlayerMovement() {
-
-        // read inputs
+        // Read inputs
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        // calculate move direction to pass to character
         if (playerCam != null) {
-            // calculate camera relative direction to move:
+            // Calculate camera relative direction to move
             playerCamForward = Vector3.Scale(playerCam.forward, new Vector3(1, 0, 1)).normalized;
             movement = v * playerCamForward + h * playerCam.right;
         }
 
         playerRigidBody.MovePosition(transform.position + (movement * movementConstant));
+
+        if (Input.GetKey(KeyCode.Space)) {
+            playerRigidBody.velocity = new Vector3(playerRigidBody.velocity.x, jumpConstant, playerRigidBody.velocity.z);
+        }
     }
-    
-    // Sword Plunge: 'q', Sword Pickup: 'e'
+
+    /***********************************************************/
     void HandleSwordPlunge() {
         if (Input.GetKeyDown(KeyCode.Q) && playerSword.transform.parent != null) {
             // Detach the sword from the player
@@ -78,6 +84,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    /***********************************************************/
     bool IsObjectClose(GameObject object1, GameObject object2) {
         if (Mathf.Abs(object1.transform.position.x - object2.transform.position.x) <= 1.0f 
             && Mathf.Abs(object1.transform.position.z - object2.transform.position.z) <= 1.0f) {
@@ -87,7 +94,7 @@ public class PlayerController : MonoBehaviour {
         return false;
     }
 
-
+    /***********************************************************/
     void HandlePlayerMouseClick() {
         
     }
