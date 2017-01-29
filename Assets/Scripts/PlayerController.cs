@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour {
     static Quaternion    SWORD_HOLD_ROTATION   = Quaternion.Euler(145.0f, 0.0f, 0.0f);
     static Vector3       SWORD_HOLD_POSITION   = new Vector3(0.065f, 0.055f, -0.03f);
 
+    static float         CLOSENESS_THRESHOLD   = 0.5f;
+
     /***********************************************************/
     // Use this for initialization
     void Start () {
@@ -61,7 +63,7 @@ public class PlayerController : MonoBehaviour {
             playerRigidBody.velocity = new Vector3(playerRigidBody.velocity.x, jumpConstant, playerRigidBody.velocity.z);
         }
     }
-
+    
     /***********************************************************/
     void HandleSwordPlunge() {
         if (Input.GetKeyDown(KeyCode.Q) && playerSword.transform.parent != null) {
@@ -86,8 +88,8 @@ public class PlayerController : MonoBehaviour {
 
     /***********************************************************/
     bool IsObjectClose(GameObject object1, GameObject object2) {
-        if (Mathf.Abs(object1.transform.position.x - object2.transform.position.x) <= 1.0f 
-            && Mathf.Abs(object1.transform.position.z - object2.transform.position.z) <= 1.0f) {
+        if (Mathf.Abs(object1.transform.position.x - object2.transform.position.x) <= CLOSENESS_THRESHOLD
+            && Mathf.Abs(object1.transform.position.z - object2.transform.position.z) <= CLOSENESS_THRESHOLD) {
             return true;
         }
 
