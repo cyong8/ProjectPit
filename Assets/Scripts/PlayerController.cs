@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
     /********** MOVEMENT VARIABLES **********/
     public float         movementConstant = 0.15f;
     private Vector3      movement;
-    public float         jumpConstant = 5.0f;
+    public float         jumpConstant = 0.05f;
 
     /********** CONSTANTS **********/
     static Quaternion    SWORD_PLUNGE_ROTATION = Quaternion.Euler(90.0f, 0.0f, 0.0f);
